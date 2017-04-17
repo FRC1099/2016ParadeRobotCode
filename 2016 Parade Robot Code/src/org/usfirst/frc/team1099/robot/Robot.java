@@ -3,6 +3,8 @@ package org.usfirst.frc.team1099.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -13,9 +15,11 @@ import edu.wpi.first.wpilibj.Victor;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	Victor ldrive = new Victor(0);
-	Victor rdrive = new Victor(1);
-	Victor flagspin = new Victor(2);
+	Talon ldrive = new Talon(0);
+	Talon rdrive = new Talon(1);
+	Talon flagspin = new Talon(2);
+	
+	Relay horn = new Relay(3);
 	
 	Joystick gamepad = new Joystick(1);
 	
@@ -34,6 +38,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	//Drive Code
     	if (gamepad.getRawAxis(1) > 0.1) {
 			ldrive.set(1.0);
     	}
@@ -44,7 +49,7 @@ public class Robot extends IterativeRobot {
 		else {
 			ldrive.set(0.0);
 		}
-	
+    	
 		if (gamepad.getRawAxis(2) > 0.1) {
 			rdrive.set(1.0);
 		}
@@ -56,13 +61,21 @@ public class Robot extends IterativeRobot {
 			rdrive.set(0.0);
 		}
 		
+		//Flag Spin Code
 		if (gamepad.getRawButton(1)) {
 			flagspin.set(0.3);
 		}
-			else {
-				flagspin.set(0.0);
-			}
-        
+		else {
+			flagspin.set(0.0);
+		}
+		
+		//Horn Code
+		if (gamepad.getRawButton(2)) {
+			horn.set(Relay.Value.kForward);
+		}
+		else {
+			horn.set(Relay.Value.kReverse);
+		}
     }
     
     /**
