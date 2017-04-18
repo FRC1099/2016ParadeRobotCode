@@ -21,7 +21,7 @@ public class Robot extends IterativeRobot {
 	
 	Relay horn = new Relay(3);
 	
-	Joystick gamepad = new Joystick(1);
+	Joystick gamepad = new Joystick(0);
 	
     public void robotInit() {
     }
@@ -39,25 +39,15 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
     	//Drive Code
-    	if (gamepad.getRawAxis(1) > 0.1) {
-			ldrive.set(1.0);
-    	}
-		
-		else if (gamepad.getRawAxis(1) < -0.1) {
-			ldrive.set(-1.0);
-		}
-		else {
+    	if (Math.abs(gamepad.getRawAxis(1)) > 0.1) {
+			ldrive.set(-gamepad.getRawAxis(1));
+    	} else {
 			ldrive.set(0.0);
 		}
     	
-		if (gamepad.getRawAxis(2) > 0.1) {
-			rdrive.set(1.0);
-		}
-		
-		else if (gamepad.getRawAxis(2) < -0.1) {
-			rdrive.set(-1.0);
-		}
-		else {
+    	if (Math.abs(gamepad.getRawAxis(5)) > 0.1) {
+			rdrive.set(gamepad.getRawAxis(5));
+    	} else {
 			rdrive.set(0.0);
 		}
 		
@@ -74,7 +64,7 @@ public class Robot extends IterativeRobot {
 			horn.set(Relay.Value.kForward);
 		}
 		else {
-			horn.set(Relay.Value.kReverse);
+			horn.set(Relay.Value.kOff);
 		}
     }
     
@@ -82,7 +72,5 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    
     }
-    
 }
